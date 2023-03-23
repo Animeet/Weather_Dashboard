@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Weather Dashboard</title>
+</head>
+
+<body>
+    <header class="d-flex header bg-primary m-2 p-2 text-white justify-content-center">
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+        <section class="d-flex flex-row">
+            <div>
+                <h2 class="fw-bold m-2">Search for a City:</h2>
+                <form>
+                    <div class="align-items-center m-2">
+                        <div class="col-2">
+                            <input type="text" class="" id="cityName" placeholder="City Name">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-block mt-2 btn-sizing"
+                                id="search-button">Search</button>
+                        </div>
+                    </div>
+                    <div class="city-list-box">
+                        <ul class="list-group" id="city-list"></ul>
+                    </div>
+                </form>
+            </div>
+            <div class="card border-dark marg-left" style="width: 60rem">
+                <h2>City Name</h2>
+                <p>Temp:</p>
+                <p>Wind:</p>
+                <p>Humidity:</p>
+            </div>
+        </section>
+
+        <hr class="border-bottom col-2">
+
+        <div class="d-flex flex-row">
+            <section class="col-2 m-2">
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 1</button>
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 2</button>
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 3</button>
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 4</button>
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 5</button>
+                <button type="submit" class="btn btn-secondary btn-block mt-2 btn-sizing">City 6</button>
+            </section>
+
+            <h2 class="title-left">5-Day Forecast:</h2>
+                <section class="card results-push">
+                    <h3>9/14/2022</h3>
+                    <p>Temp:</p>
+                    <p>Wind:</p>
+                    <p>Humidity:</p>
+                </section>
+                <section class="card results-push">
+                    <h3>9/14/2022</h3>
+                    <p>Temp:</p>
+                    <p>Wind:</p>
+                    <p>Humidity:</p>
+                </section>
+                <section class="card results-push">
+                    <h3>9/14/2022</h3>
+                    <p>Temp:</p>
+                    <p>Wind:</p>
+                    <p>Humidity:</p>
+                </section>
+                <section class="card results-push">
+                    <h3>9/14/2022</h3>
+                    <p>Temp:</p>
+                    <p>Wind:</p>
+                    <p>Humidity:</p>
+                </section>
+            </div>
+        </div>
+
+        <section>
+        </section>
+    </main>
+
+    <footer>
+
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
