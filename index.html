@@ -11,12 +11,15 @@
 </head>
 
 <body>
+    <!-- Weather Dashboard Header -->
     <header class="d-flex header bg-primary m-2 p-2 text-white justify-content-center">
         <h1>Weather Dashboard</h1>
     </header>
 
     <main class="m-5 text-align-center">
         <div class="row m-0 d-block d-md-flex">
+
+            <!-- Search For Weather -->
             <section class="col-12 col-md-3">
                 <form id="search-form">
                     <h2>Search for a City:</h2>
@@ -28,6 +31,7 @@
             </section>
 
             <section class="col-12 col-md-9">
+                <!-- Current Weather -->
                 <div id="current-weather" class="p-3 mb-2">
                     <h2 id="current-heading">Current Weather</h2>
                     <div class="row">
@@ -38,6 +42,68 @@
                         </div>
                         <div class="col-4" id="spacer"></div>
                         <div id="current-icon" class="col-4"></div>
+                    </div>
+                </div>
+
+                <!-- Future 5 Day Forecast -->
+                <div id="forecast" class="p-3">
+                    <h2 class="d-block">5-Day Forecast</h2>
+                    <div class="row justify-content-around d-block d-xl-flex mr-0">
+
+                        <!-- Forecast 1 -->
+                        <section id="forecast1" class="text-center d-none col m-2 p-0">
+                            <div class="forecast-body">
+                                <div id="forecast1-title" class="forecast-title"></div>
+                                <img src="" id="forecast0-icon" class="forecast-icon"></img>
+                                <div id="forecast0-temp"></div>
+                                <div id="forecast0-wind"></div>
+                                <div id="forecast0-humid"></div>
+                            </div>
+                        </section>
+
+                        <!-- Forecast 2 -->
+                        <section id="forecast2" class="text-center d-none col m-2 p-0">
+                            <div class="forecast-body">
+                                <div id="forecast2-title" class="forecast-title"></div>
+                                <img src="" id="forecast1-icon" class="forecast-icon"></img>
+                                <div id="forecast1-temp"></div>
+                                <div id="forecast1-wind"></div>
+                                <div id="forecast1-humid"></div>
+                            </div>
+                        </section>
+
+                        <!-- Forecast 3 -->
+                        <section id="forecast3" class="text-center d-none col m-2 p-0">
+                            <div class="forecast-body">
+                                <div id="forecast3-title" class="forecast-title"></div>
+                                <img src="" id="forecast2-icon" class="forecast-icon"></img>
+                                <div id="forecast2-temp"></div>
+                                <div id="forecast2-wind"></div>
+                                <div id="forecast2-humid"></div>
+                            </div>
+                        </section>
+
+                        <!-- Forecast 4 -->
+                        <section id="forecast4" class="text-center d-none col m-2 p-0">
+                            <div class="forecast-body">
+                                <div id="forecast4-title" class="forecast-title"></div>
+                                <img src="" id="forecast3-icon" class="forecast-icon"></img>
+                                <div id="forecast3-temp"></div>
+                                <div id="forecast3-wind"></div>
+                                <div id="forecast3-humid"></div>
+                            </div>
+                        </section>
+
+                        <!-- Forecast 5 -->
+                        <section id="forecast5" class="text-center d-none col m-2 p-0">
+                            <div class="forecast-body">
+                                <div id="forecast5-title" class="forecast-title"></div>
+                                <img src="" id="forecast4-icon" class="forecast-icon"></img>
+                                <div id="forecast4-temp"></div>
+                                <div id="forecast4-wind"></div>
+                                <div id="forecast4-humid"></div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </section>
