@@ -40,18 +40,19 @@ var humid = document.querySelector("#humid");
 
 
 // * * * Get Current Weather Information * * * //
-async function getCurrentWeather() {
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=55c390308c1632892b0e2d6d9e50f29d')
+function getCurrentWeather(eventObj) {
+    eventObj.preventDefault();
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + citySearch.value + '&appid=' + apiKey)
         .then(
             function (response) {
-                alert(response.status);
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
                         response.status);
                     return;
                 }
                 response.json().then(function (data) {
-                    console.log(response);
+                    console.log(data);
+                    displayCurrentWeather(data);
                 });
             }
         )
@@ -60,32 +61,34 @@ async function getCurrentWeather() {
         });
 }
 
-searchWeatherBtn.addEventListener('click', getCurrentWeather);
+searchForm.addEventListener('submit', getCurrentWeather);
+
+
 
 // * * * Display Current Weather Information * * * //
-function displayCurrentWeather() {
-    var data = getCurrentWeather();
-    json.loads(data);
+function displayCurrentWeather(data) {
 
-    temp.innerHTML = data['main']['temp']
-    wind.innerHTML = data['wind']['speed']
-    humid.innerHTML = data['main']['humidity']
+    temp.innerHTML = 'Temp: ' + data['main']['temp'] + " 'F"
+    wind.innerHTML = 'Wind: ' + data['wind']['speed'] + ' MPH'
+    humid.innerHTML = 'Humidity: ' + data['main']['humidity'] + '%'
+    getForecast();
 }
+
 
 
 // * * * Get Forecast Weather Information * * * //
-async function getForecast() {
-    fetch('https://pro.openweathermap.org/data/2.5/forecast/hourly?q=London&appid=55c390308c1632892b0e2d6d9e50f29d')
+function getForecast() {
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=London&appid=55c390308c1632892b0e2d6d9e50f29d')
         .then(
             function (response) {
-                alert(response.status);
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
                         response.status);
                     return;
                 }
                 response.json().then(function (data) {
-                    console.log(response);
+                    console.log(data);
+                    displayForecast(data);
                 });
             }
         )
@@ -93,21 +96,41 @@ async function getForecast() {
             console.log('Fetch Error :-S', err);
         });
 }
+
 
 
 
 // * * * Display Forecast Weather Information * * * //
-function displayForecast() {
-    var forecast = getForecast();
-    json.loads(data);
+function displayForecast(data) {
 
-    temp.innerHTML = data['main']['temp']
-    wind.innerHTML = data['wind']['speed']
-    humid.innerHTML = data['main']['humidity']
+    currentHeading.innerHTML = citySearch.value + data.list[0]['dt_txt'].split(' ')[0]
+
+    var forecastDate = document.querySelector('.forecast-date')
+    for (var i = 1; i < forecastDate.length; i++) {
+        forecastDate.innerHTML = data.list[i]['dt_txt'].split(' ')[0]
+    }
+
+    var forecastTemp = document.querySelector('.forecast-temp')
+    for (var i = 0; i < forecastTemp.length; i++) {
+        forecastTemp.innerHTML = data.list[i]['main']['temp']
+    }
+
+    var forecastWind = document.querySelector('.forecast-wind')
+    for (var i = 0; i < forecastWind.length; i++) {
+        forecastWind.innerHTML = data.list[i]['wind']['speed']
+    }
+
+    var forecastHumid = document.querySelector('.forecast-humid')
+    for (var i = 0; i < forecastHumid.length; i++) {
+        forecastHumid.innerHTML = data.list[i]['main']['humidity']
+    }
+    
 }
 
 
+
 // * * * Save Search History * * * //
+
 
 
 
