@@ -32,17 +32,11 @@ var searchContainer = document.querySelector("#search-container")
 var errorContainer = document.querySelector("#error-container");
 var searchWeatherBtn = document.querySelector('#searchWeatherBtn');
 
-//variables for card data
-var temp = document.querySelector("#temp");
-var wind = document.querySelector("#wind");
-var humid = document.querySelector("#humid");
-
-
 
 // * * * Get Current Weather Information * * * //
 function getCurrentWeather(eventObj) {
     eventObj.preventDefault();
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + citySearch.value + '&appid=' + apiKey)
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + citySearch.value + '&units=imperial&appid=' + apiKey)
         .then(
             function (response) {
                 if (response.status !== 200) {
@@ -67,10 +61,24 @@ searchForm.addEventListener('submit', getCurrentWeather);
 
 // * * * Display Current Weather Information * * * //
 function displayCurrentWeather(data) {
+    var temp = document.querySelector("#temp");
+    var wind = document.querySelector("#wind");
+    var humid = document.querySelector("#humid");
+    var cityName = document.querySelector('#city-name');
 
-    temp.innerHTML = 'Temp: ' + data['main']['temp'] + " 'F"
-    wind.innerHTML = 'Wind: ' + data['wind']['speed'] + ' MPH'
-    humid.innerHTML = 'Humidity: ' + data['main']['humidity'] + '%'
+    var unixTimestamp = data.dt;
+    var date = new Date(unixTimestamp * 1000);
+    var months =  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    var year = date.getFullYear();
+    var month = months[date.getMonth()];
+    var date = date.getDate();
+    var formatTime = month + ' ' + date + ', ' + year;
+
+
+    cityName.textContent = data.name + ' (' + formatTime + ')';
+    temp.textContent = 'Temp: ' + data.main.temp + " 'F";
+    wind.textContent = 'Wind: ' + data.wind.speed + ' mph';
+    humid.textContent = 'Humidity: ' + data.main.humidity + '%';
     getForecast();
 }
 
@@ -78,7 +86,7 @@ function displayCurrentWeather(data) {
 
 // * * * Get Forecast Weather Information * * * //
 function getForecast() {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + citySearch.value + '&appid=' + apiKey)
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + citySearch.value + '&units=imperial&appid=' + apiKey)
         .then(
             function (response) {
                 if (response.status !== 200) {
@@ -102,31 +110,35 @@ function getForecast() {
 
 // * * * Display Forecast Weather Information * * * //
 function displayForecast(data) {
+    var forecastData = [data.list[5], data.list[13], data.list[22], data.list[30], data.list[38]]
 
-    currentHeading.innerHTML = citySearch.value + data.list[0]['dt_txt'].split(' ')[0]
+    // currentHeading.innerHTML = citySearch.value + ' (' + data.list[0]['dt_txt'].split(' ')[0] + ')'
+    document.getElementById('forcastContainer').innerHTML = ''
 
-    var forecastDate = document.querySelector('.forecast-date')
-    for (var i = 1; i < forecastDate.length; i++) {
-        forecastDate.innerHTML = data.list[i]['dt_txt'].split(' ')[0]
+    for (var i = 0; i < forecastData.length; i++) {
+
+        // create
+        var section = document.createElement('section')
+        var fiveDayDate = document.createElement('h5')
+        var fiveDayImg = document.createElement('img')
+        var fiveDayTemp = document.createElement('p')
+        var fiveDayWind = document.createElement('p')
+        var fiveDayHumid = document.createElement('p')
+
+
+        // add
+        section.setAttribute('class', 'text-center col-2 m-2 p-0 border border-primary')
+        fiveDayDate.textContent = forecastData[i].dt_txt.split(' ')[0]
+        fiveDayImg.setAttribute('src', 'http://openweathermap.org/img/w/' + forecastData[i].weather[0].icon + '.png')
+        fiveDayTemp.textContent = 'Temp: ' + forecastData[i].main.temp + " 'F"
+        fiveDayWind.textContent = 'Wind: ' + forecastData[i].wind.speed + ' mph'
+        fiveDayHumid.textContent = 'Humidity: ' + forecastData[i].main.humidity + '%'
+
+        // append
+        section.append(fiveDayDate, fiveDayImg, fiveDayTemp, fiveDayWind, fiveDayHumid)
+        document.getElementById('forcastContainer').append(section)
     }
-
-    var forecastTemp = document.querySelector('.forecast-temp')
-    for (var i = 0; i < forecastTemp.length; i++) {
-        forecastTemp.innerHTML = data.list[i]['main']['temp']
-    }
-
-    var forecastWind = document.querySelector('.forecast-wind')
-    for (var i = 0; i < forecastWind.length; i++) {
-        forecastWind.innerHTML = data.list[i]['wind']['speed']
-    }
-
-    var forecastHumid = document.querySelector('.forecast-humid')
-    for (var i = 0; i < forecastHumid.length; i++) {
-        forecastHumid.innerHTML = data.list[i]['main']['humidity']
-    }
-    
 }
-
 
 
 // * * * Save Search History * * * //
