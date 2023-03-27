@@ -78,7 +78,7 @@ function displayCurrentWeather(data) {
 
 // * * * Get Forecast Weather Information * * * //
 function getForecast() {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?q=London&appid=55c390308c1632892b0e2d6d9e50f29d')
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + citySearch.value + '&appid=' + apiKey)
         .then(
             function (response) {
                 if (response.status !== 200) {
