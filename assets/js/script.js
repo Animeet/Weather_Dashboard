@@ -28,15 +28,24 @@ var currentHeading = document.querySelector("#current-heading");
 var currentData = document.querySelector("#current-data");
 var currentIcon = document.querySelector("#current-icon");
 var clearButton = document.querySelector("#clear-btn");
-var searchContainer = document.querySelector("#search-container")
+var searchContainer = document.querySelector("#search-container");
 var errorContainer = document.querySelector("#error-container");
 var searchWeatherBtn = document.querySelector('#searchWeatherBtn');
 
+var search = JSON.parse(localStorage.getItem('search') || "[]");
+
+var cityList = JSON.parse(localStorage.getItem('lsCityList') || "[]");
+cityList.forEach ((cityName) => {
+    createCityButton(cityName);
+})
 
 // * * * Get Current Weather Information * * * //
-function getCurrentWeather(eventObj) {
-    eventObj.preventDefault();
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + citySearch.value + '&units=imperial&appid=' + apiKey)
+function getCurrentWeather(eventObj, cityName) {
+    if (eventObj) {
+        eventObj.preventDefault();
+    }
+
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&appid=' + apiKey)
         .then(
             function (response) {
                 if (response.status !== 200) {
@@ -47,6 +56,7 @@ function getCurrentWeather(eventObj) {
                 response.json().then(function (data) {
                     console.log(data);
                     displayCurrentWeather(data);
+                    saveSearch(data.name);
                 });
             }
         )
@@ -55,7 +65,7 @@ function getCurrentWeather(eventObj) {
         });
 }
 
-searchForm.addEventListener('submit', getCurrentWeather);
+searchForm.addEventListener('submit', (eventObj) => getCurrentWeather(eventObj, citySearch.value));
 
 
 
@@ -68,7 +78,7 @@ function displayCurrentWeather(data) {
 
     var unixTimestamp = data.dt;
     var date = new Date(unixTimestamp * 1000);
-    var months =  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     var year = date.getFullYear();
     var month = months[date.getMonth()];
     var date = date.getDate();
@@ -79,14 +89,14 @@ function displayCurrentWeather(data) {
     temp.textContent = 'Temp: ' + data.main.temp + " 'F";
     wind.textContent = 'Wind: ' + data.wind.speed + ' mph';
     humid.textContent = 'Humidity: ' + data.main.humidity + '%';
-    getForecast();
+    getForecast(data.name);
 }
 
 
 
 // * * * Get Forecast Weather Information * * * //
-function getForecast() {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + citySearch.value + '&units=imperial&appid=' + apiKey)
+function getForecast(cityName) {
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + cityName + '&units=imperial&appid=' + apiKey)
         .then(
             function (response) {
                 if (response.status !== 200) {
@@ -143,7 +153,21 @@ function displayForecast(data) {
 
 // * * * Save Search History * * * //
 
+function saveSearch(cityName) {
+    if (!cityList.includes(cityName)) {
+        cityList.push(cityName);
+        localStorage.setItem("lsCityList", JSON.stringify(cityList));
+        createCityButton(cityName);
+    }
+}
 
 
+function createCityButton (cityName) {
+    var cityButton = document.createElement('button');
+    cityButton.textContent = cityName;
+    cityButton.onclick = () => {
+        getCurrentWeather(undefined, cityName);
+    }
 
-// * * * Load Search History * * * //
+    searchContainer.append(cityButton);
+}
